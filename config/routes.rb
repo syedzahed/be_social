@@ -1,15 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :dashboard
-  namespace :signed do
-    resources :posts, except: [:new,:show,:edit]
-  end
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'signed/posts#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -59,4 +57,19 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  namespace :signed do
+    resources :posts, except: [:new,:show,:edit]
+    resources :users, only: [:update, :index]
+    resources :friends, only: [:index] do
+      collection do
+        get "friend"
+      end
+      
+    end
+    resources :groups, only: [:index,:new,:create] do
+      collection do
+        get "group"
+      end
+    end
+  end
 end
